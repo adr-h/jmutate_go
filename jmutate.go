@@ -6,26 +6,14 @@ import (
 	"jmutate_go/operation"
 )
 
-
-
 type JsonMutation struct {
-	changes map[jpointer.JsonPointer]map[string]MutationDescription
+	changes map[jpointer.JsonPointer]map[string]operation.Document
 }
-
-type MutationDescription struct {
-	op  string
-	arg interface{}
-}
-
-func (d MutationDescription) Validate() bool{
-	return operation.IsValidOperation(d.op, d.arg)
-}
-
 
 func New(mutationDocument []byte) (JsonMutation, error){
 	mutation := JsonMutation{}
 
-	jsonMap := make(map[string]map[string]MutationDescription)
+	jsonMap := make(map[string]map[string]operation.Document)
 	if err := json.Unmarshal(mutationDocument, &jsonMap); err != nil {
 		 return mutation, err
 	}

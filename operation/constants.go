@@ -1,5 +1,10 @@
 package operation
 
+import (
+	"jmutate_go/operation/incr"
+	"errors"
+)
+
 // Allowed operations
 const (
 	SET = "SET"
@@ -7,17 +12,22 @@ const (
 	INCR = "INCR"
 	MULTI = "MULTI"
 )
-func IsValidOperation(operation string, argument interface{}) bool {
-	switch(operation){
+
+type Operation interface{
+	Apply(receiver interface{}) (result interface{}, err error)
+}
+
+func OperationFactory(operationName string, argument interface{}) (Operation, error) {
+	switch(operationName){
 	case SET:
-		return true
+		return nil, nil
 	case DEL:
-		return true
+		return nil, nil
 	case INCR:
-		return true
+		return incr.New(argument)
 	case MULTI:
-		return true
+		return nil, nil
 	default:
-		return false
+		return nil, errors.New("Unknown JSON mutation operation: " + operationName)
 	}
 }
