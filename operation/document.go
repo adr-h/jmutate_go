@@ -2,12 +2,12 @@ package operation
 
 //represents the JSON document that describes an operation
 type Document struct {
-	op  string
-	arg interface{}
+	OperationName string      `json:"op"`
+	Argument      interface{} `json:"arg"`
 }
 
 func (d Document) Run(receiver interface{}) (result interface{},err error){
-	operation, err := OperationFactory(d.op, d.arg)
+	operation, err := OperationFactory(d.OperationName, d.Argument)
 	if (err != nil){
 		return
 	}
