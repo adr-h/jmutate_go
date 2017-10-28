@@ -7,35 +7,51 @@ import (
 )
 
 type JsonMutation struct {
-	operations map[jpointer.JsonPointer]operation.Document
+	operations map[string]operation.Document
 }
 
 func New(mutationDocument []byte) (JsonMutation, error){
-	mutation := JsonMutation{}
+	mutation := JsonMutation{
+		operations : make(map[string]operation.Document),
+	}
 
-	jsonMap := make(map[string]operation.Document)
+	jsonMap := make(map[string]json.RawMessage)
 	if err := json.Unmarshal(mutationDocument, &jsonMap); err != nil {
 		 return mutation, err
 	}
 
 	for key, value := range jsonMap {
-		pointer, err := jpointer.NewJsonPointer(key)
-		if err != nil {
+		//operationDoc, ok := value.(operation.Document)
+		//if !ok {
+		//	return mutation, errors.New("Invalid operation was provided!")
+		//}
+		operationDoc := operation.Document{}
+		err := json.Unmarshal(value,&operationDoc)
+		if (err != nil){
 			return mutation, err
 		}
-		mutation.operations[pointer] = value
+
+		mutation.operations[key] = operationDoc
 	}
 
 	return mutation, nil
 }
 
 
-func (j JsonMutation) Apply(document []byte) (newDocument []byte, err error) {
-	newDocument = make([]byte, len(document))
-	copy(newDocument, document)
+func (j JsonMutation) Apply(document []byte) (newDocument []byte,err error) {
+	var tempDoc interface{}
+	err = json.Unmarshal(document, &tempDoc)
+	if err != nil {
+		return newDocument, nil
+	}
 
-	for pointer, operationDoc := range j.operations {
-		operationReceiver, _, err := pointer.Get(document)
+	for pointerString, operationDoc := range j.operations {
+		pointer, err := jpointer.NewJsonPointer(pointerString)
+		if err != nil {
+			return newDocument, err
+		}
+
+		operationReceiver, _, err := pointer.Get(tempDoc)
 		if (err != nil) {
 			return newDocument, err
 		}
@@ -45,12 +61,12 @@ func (j JsonMutation) Apply(document []byte) (newDocument []byte, err error) {
 			return newDocument, err
 		}
 
-		setResult, err := pointer.Set(document, operationResult)
+		tempDoc, err = pointer.Set(tempDoc, operationResult)
 		if (err != nil) {
 			return newDocument, err
 		}
-		newDocument, _ = setResult.([]byte)
 	}
 
-	return newDocument, nil
+	newDocument,err = json.Marshal(tempDoc)
+	return newDocument, err
 }
