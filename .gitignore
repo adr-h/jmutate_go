@@ -1,6 +1,7 @@
 # JetBrains editors
 .idea
 
-
-
-
+#ignore vendor packages that are only pulled in for testing purposes
+vendor/github.com/gopherjs/gopherjs
+vendor/github.com/jtolds/gls
+vendor/github.com/smartystreets
