@@ -24,3 +24,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/xeipuuv/gojsonpointer"
+
+[[constraint]]
+  name = "github.com/smartystreets/goconvey"
+  version = "1.6.3"

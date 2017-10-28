@@ -28,18 +28,18 @@ func New(argument interface{}) (incr Incr,err error) {
 }
 
 //the argument for the INCR operation can only be an int or float64
-func (i Incr) setArgument(argument interface{}) error{
+func (i *Incr) setArgument(argument interface{}) error{
 	intArg, ok := argument.(int)
 	if (ok) {
 		i.intArg = intArg
-		i.whichReceiver = INT
+		i.whichArg = INT
 		return nil
 	}
 
 	floatArg, ok := argument.(float64)
 	if (ok) {
 		i.floatArg = floatArg
-		i.whichReceiver = FLOAT
+		i.whichArg = FLOAT
 		return nil
 	}
 
@@ -47,7 +47,7 @@ func (i Incr) setArgument(argument interface{}) error{
 }
 
 //the receiver of the INCR operation can only be an int or float64
-func (i Incr) setReceiver(receiver interface{}) error {
+func (i *Incr) setReceiver(receiver interface{}) error {
 	intReceiver, ok := receiver.(int)
 	if (ok) {
 		i.intReceiver = intReceiver
@@ -65,7 +65,7 @@ func (i Incr) setReceiver(receiver interface{}) error {
 	return fmt.Errorf("receiver of INCR must be a valid integer or float; Got `%s` instead", receiver);
 }
 
-func (i Incr) Apply(receiver interface{}) (interface{}, error) {
+func (i *Incr) Apply(receiver interface{}) (interface{}, error) {
 	if err := i.setReceiver(receiver); err != nil {
 		return nil, err
 	}
