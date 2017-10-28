@@ -7,7 +7,7 @@ import (
 )
 
 type JsonMutation struct {
-	changes map[jpointer.JsonPointer]map[string]operation.Document
+	operations map[jpointer.JsonPointer]map[string]operation.Document
 }
 
 func New(mutationDocument []byte) (JsonMutation, error){
@@ -23,7 +23,7 @@ func New(mutationDocument []byte) (JsonMutation, error){
 		if err != nil{
 			return mutation, err
 		}
-		mutation.changes[pointer] = value
+		mutation.operations[pointer] = value
 	}
 
 	return mutation, nil
