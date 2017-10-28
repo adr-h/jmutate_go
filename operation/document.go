@@ -4,7 +4,6 @@ package operation
 type Document struct {
 	op  string
 	arg interface{}
-	Operation `json:"-"`
 }
 
 func (d Document) Run(receiver interface{}) (result interface{},err error){
