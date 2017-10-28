@@ -5,6 +5,7 @@ import (
 	"testing"
 	"encoding/json"
 
+	"time"
 )
 
 func TestIncr(t *testing.T){
@@ -71,8 +72,8 @@ func TestIncr(t *testing.T){
 	})
 }
 
-/* Quick-and-dirty test function to benchmark performance
-func TestIncrPerformance(t *testing.T) {
+ //Quick-and-dirty test function to benchmark performance
+/*func TestIncrPerformance(t *testing.T) {
 
 	documentToMutate := `{
 			"person" : {
@@ -95,13 +96,13 @@ func TestIncrPerformance(t *testing.T) {
 			"/person/success_rate" : {
 				"op" : "INCR",
 				"arg" : 3.4
-			}
+			},
 			"/person/morale" : {
 				"op" : "INCR", "arg" : 5.1
 			}
 	}`
 
-	Convey("Given valid mutation document and document to mutate, the whole process of creating a new mutation and applying it should take no longer than 10ms on average", t, func(){
+	Convey("Given valid mutation document and document to mutate, the whole process of creating a new mutation and applying it should take no longer than 1ms on average", t, func(){
 		iterations := 50000
 		start := time.Now().UnixNano()
 
@@ -116,7 +117,7 @@ func TestIncrPerformance(t *testing.T) {
 		operationsPerSecond := 1000 / millisecondsPerIteration
 
 
-		So(millisecondsPerIteration, ShouldBeLessThan, 10)
+		So(millisecondsPerIteration, ShouldBeLessThan, 1)
 		So(operationsPerSecond, ShouldBeGreaterThan, 60000)
 	})
 }*/

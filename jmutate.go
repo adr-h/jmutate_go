@@ -2,8 +2,8 @@ package jmutate_go
 
 import (
 	jpointer "github.com/xeipuuv/gojsonpointer"
-	"encoding/json"
 	"jmutate_go/operation"
+	"github.com/pquerna/ffjson/ffjson"
 )
 
 type JsonMutation struct {
@@ -11,28 +11,14 @@ type JsonMutation struct {
 }
 
 func New(mutationDocument []byte) (JsonMutation, error){
-	mutation := JsonMutation{
-		operations : make(map[string]operation.Document),
-	}
+	mutation := JsonMutation{}
 
-	jsonMap := make(map[string]json.RawMessage)
-	if err := json.Unmarshal(mutationDocument, &jsonMap); err != nil {
+	jsonMap := make(map[string]operation.Document)
+	if err := ffjson.Unmarshal(mutationDocument, &jsonMap); err != nil {
 		 return mutation, err
 	}
 
-	for key, value := range jsonMap {
-		//operationDoc, ok := value.(operation.Document)
-		//if !ok {
-		//	return mutation, errors.New("Invalid operation was provided!")
-		//}
-		operationDoc := operation.Document{}
-		err := json.Unmarshal(value,&operationDoc)
-		if (err != nil){
-			return mutation, err
-		}
-
-		mutation.operations[key] = operationDoc
-	}
+	mutation.operations = jsonMap
 
 	return mutation, nil
 }
@@ -40,7 +26,7 @@ func New(mutationDocument []byte) (JsonMutation, error){
 
 func (j JsonMutation) Apply(document []byte) (newDocument []byte,err error) {
 	var tempDoc interface{}
-	err = json.Unmarshal(document, &tempDoc)
+	err = ffjson.Unmarshal(document, &tempDoc)
 	if err != nil {
 		return newDocument, nil
 	}
@@ -67,6 +53,6 @@ func (j JsonMutation) Apply(document []byte) (newDocument []byte,err error) {
 		}
 	}
 
-	newDocument,err = json.Marshal(tempDoc)
+	newDocument,err = ffjson.Marshal(tempDoc)
 	return newDocument, err
 }

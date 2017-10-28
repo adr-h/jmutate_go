@@ -14,6 +14,12 @@
   version = "v4.2.1"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/pquerna/ffjson"
+  packages = [".","fflib/v1","fflib/v1/internal","generator","inception","shared"]
+  revision = "d49c2bc1aa135aad0c6f4fc2056623ec78f5d5ac"
+
+[[projects]]
   name = "github.com/smartystreets/assertions"
   packages = [".","internal/go-render/render","internal/oglematchers"]
   revision = "ff1918e1e5a13a74014644ae7c1e0ba2f791364d"
@@ -34,6 +40,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "cf70afc0be38b9b26d04c3827688cbd64e45e1b8efdbb238175222efec91e1a7"
+  inputs-digest = "5405828a4b9a7d80485e4e86ce0e90c30ef2df337358163547375606a5afe2e3"
   solver-name = "gps-cdcl"
   solver-version = 1

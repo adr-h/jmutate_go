@@ -1,3 +1,4 @@
+//go:generate ffjson $GOFILE
 package operation
 
 //represents the JSON document that describes an operation
