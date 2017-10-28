@@ -65,7 +65,7 @@ func (i *Incr) setReceiver(receiver interface{}) error {
 	return fmt.Errorf("receiver of INCR must be a valid integer or float; Got `%s` instead", receiver);
 }
 
-func (i *Incr) Apply(receiver interface{}) (interface{}, error) {
+func (i Incr) Apply(receiver interface{}) (result interface{}, err error) {
 	if err := i.setReceiver(receiver); err != nil {
 		return nil, err
 	}
