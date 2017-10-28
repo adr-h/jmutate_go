@@ -7,13 +7,13 @@ import (
 )
 
 type JsonMutation struct {
-	operations map[jpointer.JsonPointer]map[string]operation.Document
+	operations map[jpointer.JsonPointer]operation.Document
 }
 
 func New(mutationDocument []byte) (JsonMutation, error){
 	mutation := JsonMutation{}
 
-	jsonMap := make(map[string]map[string]operation.Document)
+	jsonMap := make(map[string]operation.Document)
 	if err := json.Unmarshal(mutationDocument, &jsonMap); err != nil {
 		 return mutation, err
 	}
