@@ -3,6 +3,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/Aetheus/gojsonpointer"
+  packages = ["."]
+  revision = "e0d451ea52c8e65cea3e82eb35968abcec6e524a"
+
+[[projects]]
+  branch = "master"
   name = "github.com/gopherjs/gopherjs"
   packages = ["js"]
   revision = "a0a7cfed7b2a54080888fd2b3d4a3ec14562c86c"
@@ -22,7 +28,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/pquerna/ffjson"
-  packages = ["ffjson","fflib/v1","fflib/v1/internal","inception","shared"]
+  packages = ["fflib/v1","fflib/v1/internal"]
   revision = "d49c2bc1aa135aad0c6f4fc2056623ec78f5d5ac"
 
 [[projects]]
@@ -37,15 +43,9 @@
   revision = "9e8dc3f972df6c8fcc0375ef492c24d0bb204857"
   version = "1.6.3"
 
-[[projects]]
-  branch = "master"
-  name = "github.com/xeipuuv/gojsonpointer"
-  packages = ["."]
-  revision = "6fe8760cad3569743d51ddbb243b26f8456742dc"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c231e4feb46ec9bdadd3089cfa5616479ae5fffafa6bba8d4a878f6d352de4b6"
+  inputs-digest = "ea13c3ccb697dd5b95e9c88658f9b85657dae1c785ceaf056b4050910df07a70"
   solver-name = "gps-cdcl"
   solver-version = 1

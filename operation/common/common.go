@@ -1,7 +1,7 @@
 package common
 
 import (
-	jpointer "github.com/xeipuuv/gojsonpointer"
+	jpointer "github.com/Aetheus/gojsonpointer"
 	"errors"
 )
 
@@ -31,6 +31,23 @@ func SetPointer(
 		return
 	}
 	mutatedDocument, ok := setResult.(map[string]interface{})
+	if (!ok) {
+		err = errors.New("Error occured while casting document")
+		return
+	}
+
+	return
+}
+
+func DeletePointer(
+	pointer jpointer.JsonPointer, targetDocument map[string]interface{},
+) (mutatedDocument map[string]interface{}, err error) {
+	delResult, err := pointer.Delete(targetDocument)
+	if (err != nil){
+		return
+	}
+
+	mutatedDocument, ok := delResult.(map[string]interface{})
 	if (!ok) {
 		err = errors.New("Error occured while casting document")
 		return
