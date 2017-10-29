@@ -1,7 +1,6 @@
 package jmutate_go
 
 import (
-	jpointer "github.com/xeipuuv/gojsonpointer"
 	"jmutate_go/operation"
 	"github.com/json-iterator/go"
 )
@@ -26,41 +25,17 @@ func New(mutationDocument []byte) (JsonMutation, error){
 }
 
 
-func (j JsonMutation) Apply(document []byte) (newDocument []byte,err error) {
+func (j JsonMutation) Apply(targetDocument []byte) (mutatedDocument []byte,err error) {
 	tempDoc := make(map[string]interface{})
-	err = json.Unmarshal(document, &tempDoc)
+	err = json.Unmarshal(targetDocument, &tempDoc)
 	if err != nil {
-		return newDocument, nil
+		return mutatedDocument, nil
 	}
-
 
 	for pointerString, operationDoc := range j.operations {
-		pointer, err := jpointer.NewJsonPointer(pointerString)
-		if err != nil {
-			return newDocument, err
-		}
-
-		/*
-		TODO: certain operations (e.g: SET or DEL) don't require an operation receiver.
-		Refactor this so it doesn't unnecessarily retrieve the operationReceiver in those cases
-		*/
-		operationReceiver, _, err := pointer.Get(tempDoc)
-		if (err != nil) {
-			return newDocument, err
-		}
-
-		operationResult, err := operationDoc.Run(operationReceiver)
-		if (err != nil){
-			return newDocument, err
-		}
-
-		setResult, err := pointer.Set(tempDoc, operationResult)
-		if (err != nil) {
-			return newDocument, err
-		}
-		tempDoc = setResult.(map[string]interface{})
+		operation.RunOperationDocument(pointerString,operationDoc,tempDoc)
 	}
 
-	newDocument,err = json.Marshal(tempDoc)
-	return newDocument, err
+	mutatedDocument,err = json.Marshal(tempDoc)
+	return mutatedDocument, err
 }

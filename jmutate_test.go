@@ -40,6 +40,10 @@ func TestJsonMutation(t *testing.T){
 			"/person/success_rate" : {
 				"op" : "INCR",
 				"arg" : 3.4
+			},
+			"/person/occupation/title" : {
+				"op" : "SET",
+				"arg" : "CTO"
 			}
 		}`
 
@@ -60,6 +64,7 @@ func TestJsonMutation(t *testing.T){
 				So(err, ShouldBeNil)
 				So(testDoc.Person.Occupation.Years, ShouldEqual, 7)
 				So(testDoc.Person.SuccessRate, ShouldEqual, 94.9)
+				So(testDoc.Person.Occupation.Title, ShouldEqual, "CTO")
 			})
 
 		})

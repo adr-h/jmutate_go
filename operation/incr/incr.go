@@ -2,6 +2,7 @@ package incr
 
 import (
 	"fmt"
+	"jmutate_go/operation/common"
 )
 
 type NumType uint8
@@ -65,7 +66,13 @@ func (i *Incr) setReceiver(receiver interface{}) error {
 	return fmt.Errorf("receiver of INCR must be a valid integer or float; Got `%s` instead", receiver);
 }
 
-func (i Incr) Apply(receiver interface{}) (result interface{}, err error) {
+func (i Incr) Apply(jsonPointer string, targetDocument map[string]interface{}) (mutatedDocument map[string]interface{}, err error) {
+	pointer, receiver, err := common.GetPointerAndReceiver(jsonPointer, targetDocument)
+	if (err != nil){
+		return mutatedDocument, err
+	}
+
+	var value interface{}
 	if err := i.setReceiver(receiver); err != nil {
 		return nil, err
 	}
@@ -87,8 +94,10 @@ func (i Incr) Apply(receiver interface{}) (result interface{}, err error) {
 			argument = float64(i.intArg)
 		}
 
-		return receiver + argument, nil
+		value =  receiver + argument
+	} else {
+		value = i.intArg + i.intReceiver
 	}
 
-	return i.intArg + i.intReceiver, nil
+	return common.SetPointer(pointer, targetDocument,value)
 }

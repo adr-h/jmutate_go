@@ -3,6 +3,7 @@ package operation
 import (
 	"jmutate_go/operation/incr"
 	"errors"
+	"jmutate_go/operation/set"
 )
 
 // Allowed operations
@@ -14,20 +15,20 @@ const (
 )
 
 type Operation interface{
-	Apply(receiver interface{}) (result interface{}, err error)
+	Apply(jsonPointer string, targetDocument map[string]interface{}) (mutatedDocument map[string]interface{}, err error)
 }
 
-func OperationFactory(operationName string, argument interface{}) (Operation, error) {
-	switch(operationName){
+func OperationFactory(document Document) (Operation, error) {
+	switch(document.OperationName){
 	case SET:
-		return nil, nil
+		return set.New(document.Argument)
 	case DEL:
 		return nil, nil
 	case INCR:
-		return incr.New(argument)
+		return incr.New(document.Argument)
 	case MULTI:
 		return nil, nil
 	default:
-		return nil, errors.New("Unknown JSON mutation operation: " + operationName)
+		return nil, errors.New("Unknown JSON mutation operation: " + document.OperationName)
 	}
 }

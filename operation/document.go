@@ -7,11 +7,12 @@ type Document struct {
 	Argument      interface{} `json:"arg"`
 }
 
-func (d Document) Run(receiver interface{}) (result interface{},err error){
-	operation, err := OperationFactory(d.OperationName, d.Argument)
-	if (err != nil){
+func RunOperationDocument(
+	pointerString string, operationDoc Document, receivingDoc map[string]interface{},
+) (mutatedDocument map[string]interface{}, err error)  {
+	operation, err := OperationFactory(operationDoc)
+	if (err != nil) {
 		return
 	}
-
-	return operation.Apply(receiver)
+	return operation.Apply(pointerString,receivingDoc)
 }
