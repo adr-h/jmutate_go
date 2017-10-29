@@ -14,6 +14,7 @@ func TestJsonMutation(t *testing.T){
 				Title string `json:"title"`
 				Years int `json:"years"`
 				Company string `json:"company"`
+				IsSellingSecretsToTheEnemy bool `json:"is_selling_secrets_to_the_enemy"`
 			} `json:"occupation"`
 			SuccessRate float64 `json:"success_rate"`
 		} `json:"person"`
@@ -26,7 +27,8 @@ func TestJsonMutation(t *testing.T){
 				"occupation" : {
 					"title" : "Senior Developer",
 					"years" : 5,
-					"company" : "Gate Breakers Inc"
+					"company" : "Gate Breakers Inc",
+					"is_selling_secrets_to_the_enemy" : false
 				},
 				"success_rate" : 91.5
 			}
@@ -44,6 +46,9 @@ func TestJsonMutation(t *testing.T){
 			"/person/occupation/title" : {
 				"op" : "SET",
 				"arg" : "CTO"
+			},
+			"/person/occupation/is_selling_secrets_to_the_enemy" : {
+				"op" : "DEL"
 			}
 		}`
 
@@ -57,19 +62,24 @@ func TestJsonMutation(t *testing.T){
 				So(err, ShouldBeNil)
 
 
-				//unmarshal to parse the results
+				//unmarshal to parse the results; need a map as well to confirm "DELETE" operation
 				var testDoc TestDoc
+				var testMap map[string]interface{}
 
 				err = json.Unmarshal(result, &testDoc)
 				So(err, ShouldBeNil)
+				err = json.Unmarshal(result, &testMap)
+				So(err, ShouldBeNil)
+
 				So(testDoc.Person.Occupation.Years, ShouldEqual, 7)
 				So(testDoc.Person.SuccessRate, ShouldEqual, 94.9)
 				So(testDoc.Person.Occupation.Title, ShouldEqual, "CTO")
+
+				personMap := testMap["person"].(map[string]interface{})
+				occupationMap := personMap["occupation"].(map[string]interface{})
+				_, deletedKeyIsPresent := occupationMap["is_selling_secrets_to_the_enemy"]
+				So(deletedKeyIsPresent, ShouldBeFalse)
 			})
-
 		})
-
-
-
 	})
 }
