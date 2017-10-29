@@ -4,11 +4,10 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"testing"
 	"encoding/json"
-
 	//"time"
 )
 
-func TestIncr(t *testing.T){
+func TestJsonMutation(t *testing.T){
 
 	type TestDoc struct {
 		Person struct {
@@ -71,53 +70,3 @@ func TestIncr(t *testing.T){
 
 	})
 }
-
- //Quick-and-dirty test function to benchmark performance
-/*func TestIncrPerformance(t *testing.T) {
-
-	documentToMutate := `{
-			"person" : {
-				"name" : "Bob",
-				"occupation" : {
-					"title" : "Senior Developer",
-					"years" : 5,
-					"company" : "Gate Breakers Inc"
-				},
-				"success_rate" : 91.5,
-				"morale" : 50
-			}
-	}`
-
-	mutationDocument := `{
-			"/person/occupation/years" : {
-				"op" : "INCR",
-				"arg" : 2
-			},
-			"/person/success_rate" : {
-				"op" : "INCR",
-				"arg" : 3.4
-			},
-			"/person/morale" : {
-				"op" : "INCR", "arg" : 5.1
-			}
-	}`
-
-	Convey("Given valid mutation document and document to mutate, the whole process of creating a new mutation and applying it should take no longer than 1ms on average", t, func(){
-		iterations := 50000
-		start := time.Now().UnixNano()
-
-		for i := 0 ; i < iterations; i++ {
-			mutation, _ := New([]byte(mutationDocument))
-			mutation.Apply([]byte(documentToMutate))
-		}
-
-		end := time.Now().UnixNano()
-		elapsedInMillisecond := int64(end - start) / 1000000
-		millisecondsPerIteration := float64(elapsedInMillisecond)/float64(iterations)
-		operationsPerSecond := 1000 / millisecondsPerIteration
-
-
-		So(millisecondsPerIteration, ShouldBeLessThan, 1)
-		So(operationsPerSecond, ShouldBeGreaterThan, 60000)
-	})
-}*/
