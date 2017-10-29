@@ -22,12 +22,12 @@ func OperationFactory(document Document) (Operation, error) {
 	switch(document.OperationName){
 	case SET:
 		return set.New(document.Argument)
-	case DEL:
-		return nil, nil
+	//case DEL:
+	//	return nil, nil
 	case INCR:
 		return incr.New(document.Argument)
-	case MULTI:
-		return nil, nil
+	//case MULTI:
+	//	return nil, nil
 	default:
 		return nil, errors.New("Unknown JSON mutation operation: " + document.OperationName)
 	}
