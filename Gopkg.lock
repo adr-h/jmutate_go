@@ -8,6 +8,12 @@
   revision = "a0a7cfed7b2a54080888fd2b3d4a3ec14562c86c"
 
 [[projects]]
+  name = "github.com/json-iterator/go"
+  packages = ["."]
+  revision = "6240e1e7983a85228f7fd9c3e1b6932d46ec58e2"
+  version = "1.0.3"
+
+[[projects]]
   name = "github.com/jtolds/gls"
   packages = ["."]
   revision = "77f18212c9c7edc9bd6a33d383a7b545ce62f064"
@@ -16,7 +22,7 @@
 [[projects]]
   branch = "master"
   name = "github.com/pquerna/ffjson"
-  packages = [".","fflib/v1","fflib/v1/internal","generator","inception","shared"]
+  packages = ["ffjson","fflib/v1","fflib/v1/internal","inception","shared"]
   revision = "d49c2bc1aa135aad0c6f4fc2056623ec78f5d5ac"
 
 [[projects]]
@@ -40,6 +46,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5405828a4b9a7d80485e4e86ce0e90c30ef2df337358163547375606a5afe2e3"
+  inputs-digest = "c231e4feb46ec9bdadd3089cfa5616479ae5fffafa6bba8d4a878f6d352de4b6"
   solver-name = "gps-cdcl"
   solver-version = 1
