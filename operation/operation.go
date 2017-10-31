@@ -5,6 +5,7 @@ import (
 	"errors"
 	"jmutate_go/operation/set"
 	"jmutate_go/operation/del"
+	"jmutate_go/operation/insert"
 )
 
 // Allowed operations
@@ -12,6 +13,7 @@ const (
 	SET = "SET"
 	DEL = "DEL"
 	INCR = "INCR"
+	INSERT = "INSERT"
 	MULTI = "MULTI"
 )
 
@@ -27,6 +29,8 @@ func OperationFactory(document Document) (Operation, error) {
 		return del.New()
 	case INCR:
 		return incr.New(document.Argument)
+	case INSERT:
+		return insert.New(document.Argument)
 	//case MULTI:
 	//	return nil, nil
 	default:

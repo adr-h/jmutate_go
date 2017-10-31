@@ -40,3 +40,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/Aetheus/gojsonpointer"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/mitchellh/mapstructure"
