@@ -2,7 +2,6 @@ package insert
 
 import "jmutate_go/operation/common"
 import (
-	"github.com/mitchellh/mapstructure"
 	"fmt"
 	"errors"
 )
@@ -19,13 +18,33 @@ type Insert struct {
 func New(arg interface{}) (op Insert,err error){
 	insertArg := InsertArg{}
 	op = Insert{}
-	err = mapstructure.Decode(arg,&insertArg)
-	if (err != nil){
-		return
-	} else if (insertArg.Values == nil){
-		err = errors.New("required field 'values' was missing")
+
+	mapValues, ok := arg.(map[string]interface{})
+	if !ok {
+		err = errors.New("argument was not a map")
 		return
 	}
+
+	if val, ok := mapValues["values"]; ok {
+		values, ok := val.([]interface{})
+		if (!ok) {
+			err = errors.New("the 'values' field must be an array of the new values you intend to insert")
+			return
+		}
+		insertArg.Values = values
+	} else {
+		err = errors.New("the 'values' field is required for INSERT operations")
+	}
+
+	if val, ok := mapValues["at"]; ok {
+		at, ok := val.(int)
+		if (!ok || at < 0) {
+			err = errors.New("the 'at' field must be an integer with a value equal to or higher than  0")
+			return
+		}
+		insertArg.At = &at
+	}
+
 	op.arg = insertArg
 	return
 }

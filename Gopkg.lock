@@ -27,12 +27,6 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/mitchellh/mapstructure"
-  packages = ["."]
-  revision = "06020f85339e21b2478f756a78e295255ffa4d6a"
-
-[[projects]]
-  branch = "master"
   name = "github.com/pquerna/ffjson"
   packages = ["fflib/v1","fflib/v1/internal"]
   revision = "d49c2bc1aa135aad0c6f4fc2056623ec78f5d5ac"
@@ -52,6 +46,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ae664bb7a5b18cba38f0c5a669f7ed491f9a1c04635c384592d55bf5030105de"
+  inputs-digest = "ea13c3ccb697dd5b95e9c88658f9b85657dae1c785ceaf056b4050910df07a70"
   solver-name = "gps-cdcl"
   solver-version = 1
