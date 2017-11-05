@@ -6,6 +6,7 @@ import (
 	"jmutate_go/operation/set"
 	"jmutate_go/operation/del"
 	"jmutate_go/operation/insert"
+	"jmutate_go/operation/remove"
 )
 
 // Allowed operations
@@ -15,6 +16,7 @@ const (
 	INCR = "INCR"
 	INSERT = "INSERT"
 	MULTI = "MULTI"
+	REMOVE = "REMOVE"
 )
 
 type Operation interface{
@@ -31,8 +33,8 @@ func OperationFactory(document Document) (Operation, error) {
 		return incr.New(document.Argument)
 	case INSERT:
 		return insert.New(document.Argument)
-	//case MULTI:
-	//	return nil, nil
+	case REMOVE:
+		return remove.New(document.Argument)
 	default:
 		return nil, errors.New("Unknown JSON mutation operation: " + document.OperationName)
 	}
