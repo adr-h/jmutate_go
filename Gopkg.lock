@@ -5,7 +5,7 @@
   branch = "master"
   name = "github.com/Aetheus/gojsonpointer"
   packages = ["."]
-  revision = "e0d451ea52c8e65cea3e82eb35968abcec6e524a"
+  revision = "02e5c6a11f38f85a3f4adec8b34b690a59aec543"
 
 [[projects]]
   branch = "master"

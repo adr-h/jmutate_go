@@ -246,9 +246,35 @@ func TestSetNode(t *testing.T) {
 
 }
 
-func TestDelMapNode(t *testing.T) {
+func TestSetEmptyNode(t *testing.T) {
+
+	jsonText := `{}`
+
+	var jsonDocument interface{}
+	json.Unmarshal([]byte(jsonText), &jsonDocument)
+
+	in := "/a"
+
+	p, err := NewJsonPointer(in)
+	if err != nil {
+		t.Errorf("NewJsonPointer(%v) error %v", in, err.Error())
+	}
+
+	_, err = p.Set(jsonDocument, 999)
+	if err != nil {
+		t.Errorf("Set(%v) error %v", in, err.Error())
+	}
+
+	firstNode := jsonDocument.(map[string]interface{})
+	target := firstNode["a"].(int)
+	if target != 999 {
+		t.Errorf("Set(%s) failed", in)
+	}
+}
+
+func TestDelObject(t *testing.T) {
 	jsonText := `{
-		"a":[{"b": 1, "c": 2}],
+		"a":["apple sauce", "ketchup", "soy sauce"],
 		"d": {
 			"z" : {
 				"v" : {
@@ -262,6 +288,7 @@ func TestDelMapNode(t *testing.T) {
 	var jsonDocument map[string]interface{}
 	json.Unmarshal([]byte(jsonText), &jsonDocument)
 
+	//Deleting an object key
 	in := "/d/z/v/occupation"
 	p, err := NewJsonPointer(in)
 	if err != nil {
@@ -277,11 +304,44 @@ func TestDelMapNode(t *testing.T) {
 	var z map[string]interface{} = d["z"].(map[string]interface{})
 	var v map[string]interface{} = z["v"].(map[string]interface{})
 
-	if v["name"] != "donald mcbobble" {
-		t.Errorf("Delete (%s) failed: caused an unexpected side effect")
-	}
-
 	if _, present := v["occupation"]; present {
 		t.Errorf("Delete (%s) failed: key is still present in the map", in)
 	}
+}
+
+
+func TestDelArray(t *testing.T) {
+	jsonText := `{
+		"a":["applesauce", "ketchup", "soysauce", "oliveoil"],
+		"d": {
+			"z" : {
+				"v" : {
+					"name" : "donald mcbobble",
+					"occupation" : "corporate overlord",
+					"responsibilities" : ["managing", "hiring"]
+				}
+			}
+		}
+	}`
+
+	var jsonDocument map[string]interface{}
+	json.Unmarshal([]byte(jsonText), &jsonDocument)
+
+	//Deleting an array member
+	in := "/a/2"
+	p, err := NewJsonPointer(in)
+	if err != nil {
+		t.Errorf("NewJsonPointer(%v) error %v", in, err.Error())
+	}
+
+	_,  err = p.Delete(jsonDocument)
+	if err != nil {
+		t.Errorf("Delete(%v) error %v", in, err.Error())
+	}
+
+	a := jsonDocument["a"].([]interface{})
+	if len(a) != 3 || a[2] == "soysauce" {
+		t.Errorf("Delete(%v) error (%s)", in, a)
+	}
+
 }
